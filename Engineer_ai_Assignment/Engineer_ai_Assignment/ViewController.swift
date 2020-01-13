@@ -15,6 +15,9 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
-
+    @IBAction func btnClick(_ sender: Any) {
+        self.performSegue(withIdentifier: "pushList", sender: self)
+    }
+    
 }
 

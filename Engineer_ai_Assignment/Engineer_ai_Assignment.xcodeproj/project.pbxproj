@@ -13,6 +13,7 @@
 		03AA656023CCB3C400B07EC8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03AA655E23CCB3C400B07EC8 /* Main.storyboard */; };
 		03AA656223CCB3C800B07EC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03AA656123CCB3C800B07EC8 /* Assets.xcassets */; };
 		03AA656523CCB3C800B07EC8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03AA656323CCB3C800B07EC8 /* LaunchScreen.storyboard */; };
+		03AA656D23CCB53800B07EC8 /* ListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AA656C23CCB53800B07EC8 /* ListVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		03AA656123CCB3C800B07EC8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		03AA656423CCB3C800B07EC8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		03AA656623CCB3C800B07EC8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		03AA656C23CCB53800B07EC8 /* ListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 				03AA655823CCB3C400B07EC8 /* AppDelegate.swift */,
 				03AA655A23CCB3C400B07EC8 /* SceneDelegate.swift */,
 				03AA655C23CCB3C400B07EC8 /* ViewController.swift */,
+				03AA656C23CCB53800B07EC8 /* ListVC.swift */,
 				03AA655E23CCB3C400B07EC8 /* Main.storyboard */,
 				03AA656123CCB3C800B07EC8 /* Assets.xcassets */,
 				03AA656323CCB3C800B07EC8 /* LaunchScreen.storyboard */,
@@ -138,6 +141,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03AA656D23CCB53800B07EC8 /* ListVC.swift in Sources */,
 				03AA655D23CCB3C400B07EC8 /* ViewController.swift in Sources */,
 				03AA655923CCB3C400B07EC8 /* AppDelegate.swift in Sources */,
 				03AA655B23CCB3C400B07EC8 /* SceneDelegate.swift in Sources */,
