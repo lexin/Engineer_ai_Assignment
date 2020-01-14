@@ -16,6 +16,11 @@ class ViewController: UIViewController {
     }
 
     @IBAction func btnClick(_ sender: Any) {
+        DataService.sh.getTest(test: "test", completion: { (object) in
+			//--
+        }) { (errorText) in
+			//--
+        }
         self.performSegue(withIdentifier: "pushList", sender: self)
     }
     
