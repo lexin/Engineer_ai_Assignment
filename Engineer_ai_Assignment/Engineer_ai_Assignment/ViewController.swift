@@ -30,7 +30,7 @@ class ViewController: UIViewController {
         }) { (errorText) in
 			//--
         }
-       /// self.performSegue(withIdentifier: "pushList", sender: self)
+        self.performSegue(withIdentifier: "pushList", sender: self)
     }
     
 }

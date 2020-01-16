@@ -8,36 +8,48 @@
 
 import UIKit
 
-class ListVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ListVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+
     
-    
-    @IBOutlet weak var table: UITableView!
+    @IBOutlet weak var collection: UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.table.register(TableViewCell.self, forCellReuseIdentifier: "TableViewCell")
+
     }
 
-     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    
-        return section == 0 ? CGFloat.leastNonzeroMagnitude : 32
-    }
-
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return nil
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 5;
     }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell:TableViewCell = self.table.dequeueReusableCell(withIdentifier: "TableViewCell") as! TableViewCell
-        cell.textLabel?.text = "\(indexPath.row + 1)"
-        return cell
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 10;
     }
-    
+
+
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+
+        if let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "SectionHeader", for: indexPath) as? SectionHeader{
+            sectionHeader.label.text = "Section \(indexPath.section)"
+            return sectionHeader
+        }
+        return UICollectionReusableView()
+    }
+
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let collectionCellID = "CollectionCell"
+
+        let cell = collectionView
+          .dequeueReusableCell(withReuseIdentifier: collectionCellID, for: indexPath)
+        cell.backgroundColor = UIColor.yellow
+
+        return cell
+
+    }
+
+
+     
 
     /*
      // MARK: - Navigation
