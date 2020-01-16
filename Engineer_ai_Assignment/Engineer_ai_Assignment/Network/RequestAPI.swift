@@ -9,14 +9,12 @@ import UIKit
 
 extension APIManager {
     
-    func getSmth(test:String,completion: @escaping (Data?,_ error: Error?) -> Void) {
-        let paramString = ["test": test]
-        let paramData = try? JSONSerialization.data(withJSONObject: paramString)
+    func getUsers(offset:NSInteger, limit:NSInteger, completion: @escaping (Data?,_ error: Error?) -> Void) {
+        let paramString = "?offset=\(offset)&limit=\(limit)"
         
-        let url:NSURL = NSURL(string: URLServerRequest.test)!
+        let url:NSURL = NSURL(string: URLServerRequest.users+paramString)!
         var request = URLRequest(url: url as URL)
-        request.httpMethod = HTTP_METH.POST
-        request.httpBody = paramData
+        request.httpMethod = HTTP_METH.GET
         
         self.getDataFromServer(request: request) { data, error in
             completion(data,error)

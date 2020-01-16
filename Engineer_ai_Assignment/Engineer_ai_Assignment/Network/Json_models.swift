@@ -8,7 +8,19 @@
 
 import Foundation
 
-struct TestObject: Codable {
-    var id: String
+struct AnswerObject: Codable {
+    var status: Bool
+    var message: String?
+    var data: AnswerData
+}
 
+struct AnswerData: Codable {
+    var users: [User]
+    var has_more: Bool
+}
+
+struct User: Codable {
+    var name: String?
+    var image: String?
+    var items: [String]?
 }

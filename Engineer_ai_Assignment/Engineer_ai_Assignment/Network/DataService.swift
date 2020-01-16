@@ -16,12 +16,15 @@ class DataService{
     }()
 
 
-    func getTest(test:String, completion: @escaping (TestObject?) -> Void, errorMessage: @escaping (String) -> Void) {
-        APIManager.sh.getSmth(test: test) { (data, err) in
+    func getUsers(offset:NSInteger, limit:NSInteger, completion: @escaping (AnswerObject?) -> Void, errorMessage: @escaping (String) -> Void) {
+        APIManager.sh.getUsers(offset: offset, limit: limit) { (data, err) in
             guard let data = data else {
 				return errorMessage("data is absent")
             }
-            guard let object = try? JSONDecoder().decode(TestObject.self, from: data) else {
+
+            let strData = String(decoding: data, as: UTF8.self)
+            print(strData)
+            guard let object = try? JSONDecoder().decode(AnswerObject.self, from: data) else {
                 return errorMessage("err Text")
             }
             completion(object)

@@ -12,16 +12,25 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        btnClick(self)
     }
 
     @IBAction func btnClick(_ sender: Any) {
-        DataService.sh.getTest(test: "test", completion: { (object) in
+        DataService.sh.getUsers(offset: 0, limit: 20, completion: { (object) in
+            print (object?.data.users.count)
+            guard let answerData = object?.data else {
+                print("Something wrong")
+                return                
+            }
+
+            for user in answerData.users {
+                print(user.name)
+            }
 			//--
         }) { (errorText) in
 			//--
         }
-        self.performSegue(withIdentifier: "pushList", sender: self)
+       /// self.performSegue(withIdentifier: "pushList", sender: self)
     }
     
 }

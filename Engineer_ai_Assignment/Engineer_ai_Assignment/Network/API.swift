@@ -17,8 +17,8 @@ enum API{
    }
 
 enum URLServerRequest {
-    private static let HTTP_DOMEN_API = "https://api-dev.test.com/" //dev
-    static let test = HTTP_DOMEN_API + "test"
+    private static let HTTP_DOMEN_API = "http://sd2-hiring.herokuapp.com/api/" //dev
+    static let users = HTTP_DOMEN_API + "users"
 }
  
 enum HTTP_METH {
