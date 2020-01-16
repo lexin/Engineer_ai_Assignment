@@ -22,8 +22,8 @@ class DataService{
 				return errorMessage("data is absent")
             }
 
-            let strData = String(decoding: data, as: UTF8.self)
-            print(strData)
+//            let strData = String(decoding: data, as: UTF8.self)
+//            print(strData)
             guard let object = try? JSONDecoder().decode(AnswerObject.self, from: data) else {
                 return errorMessage("err Text")
             }

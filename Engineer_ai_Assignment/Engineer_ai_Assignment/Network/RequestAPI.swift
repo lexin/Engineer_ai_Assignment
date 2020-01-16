@@ -11,8 +11,9 @@ extension APIManager {
     
     func getUsers(offset:NSInteger, limit:NSInteger, completion: @escaping (Data?,_ error: Error?) -> Void) {
         let paramString = "?offset=\(offset)&limit=\(limit)"
-        
+
         let url:NSURL = NSURL(string: URLServerRequest.users+paramString)!
+        print (url)
         var request = URLRequest(url: url as URL)
         request.httpMethod = HTTP_METH.GET
         
