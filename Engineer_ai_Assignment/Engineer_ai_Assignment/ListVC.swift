@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class ListVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
 
@@ -50,6 +51,8 @@ class ListVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         if let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "SectionHeader", for: indexPath) as? SectionHeader{
             let user = users[indexPath.section]
             sectionHeader.label.text = "\(user.name ?? "Unknown")"
+            let imgUrl = URL(string: user.image ?? "")
+            sectionHeader.imageView.kf.setImage(with: imgUrl)
             return sectionHeader
         }
         return UICollectionReusableView()

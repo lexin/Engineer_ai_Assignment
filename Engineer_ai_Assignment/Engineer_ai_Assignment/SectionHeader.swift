@@ -10,4 +10,5 @@ import UIKit
 
 class SectionHeader: UICollectionReusableView {
     @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var imageView: UIImageView!
 }
