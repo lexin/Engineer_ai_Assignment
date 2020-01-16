@@ -11,15 +11,33 @@ import UIKit
 class ListVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
 
     
-    @IBOutlet weak var collection: UICollectionView!
+    @IBOutlet weak var collection: UICollectionView?
+    var users: [User] = [] {
+        didSet {
+             DispatchQueue.main.async {
+                self.collection?.reloadData()
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        refreshData()
+    }
 
+    func refreshData() {
+        DataService.sh.getUsers(offset: 0, limit: 20, completion: { (object) in
+            guard let answerData = object?.data else {
+                print("Something wrong")
+                return
+            }
+            self.users = answerData.users
+        }) { (errorText) in
+        }
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 5;
+        return users.count;
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -30,7 +48,8 @@ class ListVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
 
         if let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "SectionHeader", for: indexPath) as? SectionHeader{
-            sectionHeader.label.text = "Section \(indexPath.section)"
+            let user = users[indexPath.section]
+            sectionHeader.label.text = "\(user.name ?? "Unknown")"
             return sectionHeader
         }
         return UICollectionReusableView()

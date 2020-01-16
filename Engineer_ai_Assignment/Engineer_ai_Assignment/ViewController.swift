@@ -16,20 +16,7 @@ class ViewController: UIViewController {
     }
 
     @IBAction func btnClick(_ sender: Any) {
-        DataService.sh.getUsers(offset: 0, limit: 20, completion: { (object) in
-            print (object?.data.users.count)
-            guard let answerData = object?.data else {
-                print("Something wrong")
-                return                
-            }
 
-            for user in answerData.users {
-                print(user.name)
-            }
-			//--
-        }) { (errorText) in
-			//--
-        }
         self.performSegue(withIdentifier: "pushList", sender: self)
     }
     
