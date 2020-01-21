@@ -55,7 +55,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bQY-4q-EpS">
                                 <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <subviews>
-                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="xAz-23-clg">
+                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="xAz-23-clg">
                                         <rect key="frame" x="10" y="10" width="394" height="754"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="2X8-YF-Puz">
@@ -145,9 +145,28 @@
                                             <outlet property="delegate" destination="Msr-l9-9sn" id="A5n-Tf-jqB"/>
                                         </connections>
                                     </collectionView>
+                                    <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" currentPage="1" translatesAutoresizingMaskIntoConstraints="NO" id="UWO-Nk-ulz">
+                                        <rect key="frame" x="297" y="732" width="80" height="37"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="0.28839362157534248" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="5JW-7P-FX5"/>
+                                        </constraints>
+                                        <color key="pageIndicatorTintColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="currentPageIndicatorTintColor" systemColor="systemIndigoColor" red="0.34509803919999998" green="0.33725490200000002" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="pageControlValueChanged:" destination="Msr-l9-9sn" eventType="valueChanged" id="VzI-Wb-ZXp"/>
+                                        </connections>
+                                    </pageControl>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
+                                    <constraint firstItem="UWO-Nk-ulz" firstAttribute="centerX" secondItem="bQY-4q-EpS" secondAttribute="centerX" constant="130" id="3yi-4s-GLc"/>
+                                    <constraint firstAttribute="bottom" secondItem="UWO-Nk-ulz" secondAttribute="bottom" constant="5" id="4As-At-i2U"/>
                                     <constraint firstItem="xAz-23-clg" firstAttribute="top" secondItem="bQY-4q-EpS" secondAttribute="top" constant="10" id="4zd-Hs-WUW"/>
                                     <constraint firstAttribute="trailing" secondItem="xAz-23-clg" secondAttribute="trailing" constant="10" id="TBK-r4-TCK"/>
                                     <constraint firstAttribute="bottom" secondItem="xAz-23-clg" secondAttribute="bottom" constant="10" id="jgr-Os-gIj"/>
@@ -167,6 +186,7 @@
                     <navigationItem key="navigationItem" id="zcT-sZ-cZt"/>
                     <connections>
                         <outlet property="collection" destination="xAz-23-clg" id="loH-lh-qqJ"/>
+                        <outlet property="pageControl" destination="UWO-Nk-ulz" id="3zl-5k-DGK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kGH-7V-kVj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

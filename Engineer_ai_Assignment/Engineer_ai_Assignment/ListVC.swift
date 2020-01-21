@@ -11,53 +11,97 @@ import Kingfisher
 import collection_view_layouts
 
 let gap: CGFloat = 10;
-let pageSize: NSInteger = 20;
+let pageSize: NSInteger = 10;
 
 class ListVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, LayoutDelegate {
     
     @IBOutlet weak var collection: UICollectionView?
+    @IBOutlet weak var pageControl: UIPageControl?
     var has_more = true;
     var dataRefreshing = false;
     var users: [User] = [] {
         didSet {
             DispatchQueue.main.async {
-                self.prepareCellSizes()
-                self.showLayout()
+                if let pageControl = self.pageControl {
+                    if (self.users.count > pageSize * pageControl.numberOfPages) {
+                        let pageNumb = self.users.count/pageSize;
+                        pageControl.numberOfPages = pageNumb;
+                        pageControl.isHidden = (pageControl.numberOfPages > 0) ? false : true
+                        pageControl.currentPage = pageNumb-1;
+                    }
+                }
+                self.redrawCollection()
             }
         }
     }
-    
+
+    var refreshControl : UIRefreshControl? = nil;
     override func viewDidLoad() {
         super.viewDidLoad()
+        pageControl?.currentPage = 0;
+        pageControl?.numberOfPages = 1;
+        pageControl?.isHidden = true;
+
         refreshData()
+
+        refreshControl = UIRefreshControl.init(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        refreshControl?.triggerVerticalOffset = 50.0
+        refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        collection?.bottomRefreshControl = refreshControl
     }
 
-    func refreshData() {
-        if (has_more) {
-            if (self.dataRefreshing==false) {
-                self.dataRefreshing = true
-                DataService.sh.getUsers(offset: self.users.count, limit: pageSize, completion: { (object) in
-                    self.dataRefreshing = false
-                    guard let answerData = object?.data else {
-                        print("Something wrong")
-                        return
+    @IBAction func pageControlValueChanged(_ sender: Any) {
+        redrawCollection()
+    }
+
+    func redrawCollection() {
+        self.prepareCellSizes()
+        self.showLayout()
+    }
+    @objc func refreshData() {
+        if (pageControl!.numberOfPages == pageControl!.currentPage + 1) {
+            if (has_more) {
+                if (self.dataRefreshing==false) {
+                    self.dataRefreshing = true
+                    DataService.sh.getUsers(offset: self.users.count, limit: pageSize, completion: { (object) in
+
+                        DispatchQueue.main.async {
+                            self.refreshControl?.endRefreshing()
+                        }
+
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                            self.dataRefreshing = false
+                        }
+
+                        guard let answerData = object?.data else {
+                            print("Something wrong")
+                            return
+                        }
+
+                        self.users.append(contentsOf: answerData.users)
+                        self.has_more = answerData.has_more
+                    }) { (errorText) in
                     }
-                    self.has_more = answerData.has_more
-                    self.users.append(contentsOf: answerData.users)
-                }) { (errorText) in
                 }
+            } else {
+                self.refreshControl?.endRefreshing()
+                print("All data is here")
             }
         } else {
-        	print("All data is here")
+            self.refreshControl?.endRefreshing()
+            pageControl!.currentPage = pageControl!.currentPage + 1
+            redrawCollection()
         }
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return users.count;
+        return  (pageSize < users.count ? pageSize : users.count)
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let user = users[section]
+        return 1;
+        let index = self.pageControl!.currentPage*pageSize+section;
+        let user = users[index]
         let items = user.items ?? []
         return items.count;
     }
@@ -65,7 +109,8 @@ class ListVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
 
         if let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "SectionHeader", for: indexPath) as? SectionHeader{
-            let user = users[indexPath.section]
+            let index = self.pageControl!.currentPage*pageSize+indexPath.section;
+            let user = users[index]
             sectionHeader.label.text = "\(user.name ?? "Unknown")"
             let imgUrl = URL(string: user.image ?? "")
             sectionHeader.imageView.kf.setImage(with: imgUrl)
@@ -79,17 +124,18 @@ class ListVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
 
         let cell : CollectionViewCell  = collectionView
             .dequeueReusableCell(withReuseIdentifier: collectionCellID, for: indexPath) as! CollectionViewCell
-        let user = users[indexPath.section]
+        let index = self.pageControl!.currentPage*pageSize+indexPath.section;
+        let user = users[index]
         let items = user.items ?? []
         let imgUrl = URL(string: items[indexPath.row] )
-        cell.imageView.kf.setImage(with: imgUrl)
+        // cell.imageView.kf.setImage(with: imgUrl)
         return cell
     }
 
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.section == users.count - 1 {
+        if indexPath.section == collectionView.numberOfSections-1 {
             print ("add data")
-            refreshData()
+            // refreshData()
         }
     }
 
@@ -111,15 +157,15 @@ class ListVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
 
                     if (items.count % 2 != 0)  {//odd
                         if (item == items.first) {
-							width = CGFloat(collection?.frame.size.width ?? 100)
+                            width = CGFloat(collection?.frame.size.width ?? 100)
                         }
                     }
 
                     let height = width
-   					oneSectionSizes.append(CGSize(width: width, height: height))
+                    oneSectionSizes.append(CGSize(width: width, height: height))
                 }
 
-                }
+            }
             cellSizes.append(oneSectionSizes)
         }
     }
@@ -146,8 +192,8 @@ class ListVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     }
 
     func headerHeight(indexPath: IndexPath) -> CGFloat {
-          return 75
-      }
+        return 75
+    }
 
 
     /*
