@@ -29,7 +29,7 @@ class ListVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
                         pageControl.currentPage = pageNumb-1;
                     }
                 }
-                self.redrawCollection()
+                self.collection?.reloadData()
             }
         }
     }
@@ -50,13 +50,10 @@ class ListVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     }
 
     @IBAction func pageControlValueChanged(_ sender: Any) {
+        collection?.reloadData()
         collection?.scrollToItem(at: IndexPath(row: 0, section: pageControl!.currentPage*pageSize), at: .top, animated: true)
     }
 
-    func redrawCollection() {
-        //self.prepareCellSizes()
-        collection?.reloadData()
-    }
     @objc func refreshData() {
         if (pageControl!.numberOfPages == pageControl!.currentPage + 1) {
             if (has_more) {
@@ -89,7 +86,7 @@ class ListVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         } else {
             self.refreshControl?.endRefreshing()
             pageControl!.currentPage = pageControl!.currentPage + 1
-            redrawCollection()
+            collection?.reloadData()
         }
     }
 
@@ -128,52 +125,11 @@ class ListVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         let user = users[index]
         let items = user.items ?? []
         let imgUrl = URL(string: items[indexPath.row] )
-         cell.imageView.kf.setImage(with: imgUrl)
+        cell.imageView.kf.setImage(with: imgUrl)
+
         return cell
     }
 
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.section == collectionView.numberOfSections-1 {
-            print ("add data")
-            // refreshData()
-        }
-    }
-
-    private var cellSizes = [[CGSize]]()
-
-    private func prepareCellSizes() {
-        cellSizes.removeAll()
-
-        for user in users {
-            var oneSectionSizes : [CGSize] = []
-
-            if let items = user.items {
-                for item in items {
-
-                    //even
-                    var width = CGFloat(((collection?.frame.size.width ?? 100)-gap)/2)
-
-                    if (items.count % 2 != 0)  {//odd
-                        if (item == items.first) {
-                            width = CGFloat(collection?.frame.size.width ?? 100)
-                        }
-                    }
-
-                    let height = width
-                    oneSectionSizes.append(CGSize(width: width, height: height))
-                }
-
-            }
-            cellSizes.append(oneSectionSizes)
-        }
-    }
-
-    func cellSize(indexPath: IndexPath) -> CGSize {
-        let s = indexPath.section;
-        let r = indexPath.row;
-        let sizeValue = cellSizes[s][r]
-        return sizeValue
-    }
 
     func headerHeight(indexPath: IndexPath) -> CGFloat {
         return 75
@@ -184,19 +140,34 @@ class ListVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
       }
 
       func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-          //return cellSize(indexPath: indexPath)
-        return CGSize(width: 100, height: 100)
+
+        let index = indexPath.section
+        let user = users[index]
+        let row = indexPath.row
+
+        var width = CGFloat(((collection?.frame.size.width ?? 100)-gap)/2) //even
+
+        if let items = user.items {
+            if (items.count % 2 != 0) { //odd
+            if (row == 0 ) {
+                width = CGFloat(collection?.frame.size.width ?? 100)
+            }
+        }
+
+        let height = width
+
+        return CGSize(width: width, height: height)
+        }
+
+        return CGSize (width: 100, height: 100)
       }
 
       func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-          return 10
+          return gap
       }
       func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-          return 10
+          return gap
       }
-
-
-    
 
 
     /*
