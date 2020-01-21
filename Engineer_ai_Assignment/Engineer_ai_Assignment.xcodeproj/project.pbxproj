@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		0337725423D06253003A6176 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0337725323D06253003A6176 /* SectionHeader.swift */; };
 		0337725623D07466003A6176 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0337725523D07466003A6176 /* CollectionViewCell.swift */; };
-		0337725823D07915003A6176 /* CollectionViewCellLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0337725723D07915003A6176 /* CollectionViewCellLoading.swift */; };
 		034DE78D23D70997006AC2BF /* UIScrollView+BottomRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 034DE78B23D70997006AC2BF /* UIScrollView+BottomRefreshControl.m */; };
 		03AA655923CCB3C400B07EC8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AA655823CCB3C400B07EC8 /* AppDelegate.swift */; };
 		03AA655B23CCB3C400B07EC8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AA655A23CCB3C400B07EC8 /* SceneDelegate.swift */; };
@@ -28,7 +27,6 @@
 /* Begin PBXFileReference section */
 		0337725323D06253003A6176 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		0337725523D07466003A6176 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
-		0337725723D07915003A6176 /* CollectionViewCellLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCellLoading.swift; sourceTree = "<group>"; };
 		034DE78A23D70997006AC2BF /* Engineer_ai_Assignment-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Engineer_ai_Assignment-Bridging-Header.h"; sourceTree = "<group>"; };
 		034DE78B23D70997006AC2BF /* UIScrollView+BottomRefreshControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+BottomRefreshControl.m"; sourceTree = "<group>"; };
 		034DE78C23D70997006AC2BF /* UIScrollView+BottomRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+BottomRefreshControl.h"; sourceTree = "<group>"; };
@@ -98,7 +96,6 @@
 				03AA656C23CCB53800B07EC8 /* ListVC.swift */,
 				0337725323D06253003A6176 /* SectionHeader.swift */,
 				0337725523D07466003A6176 /* CollectionViewCell.swift */,
-				0337725723D07915003A6176 /* CollectionViewCellLoading.swift */,
 				034DE78623D70978006AC2BF /* UIScrollView+BottomRefreshControl */,
 				03F5C4D623CE15A800F1CF71 /* Network */,
 				03AA655E23CCB3C400B07EC8 /* Main.storyboard */,
@@ -264,7 +261,6 @@
 				0337725423D06253003A6176 /* SectionHeader.swift in Sources */,
 				03F5C4D923CE15A800F1CF71 /* RequestAPI.swift in Sources */,
 				03AA655B23CCB3C400B07EC8 /* SceneDelegate.swift in Sources */,
-				0337725823D07915003A6176 /* CollectionViewCellLoading.swift in Sources */,
 				03F5C4DA23CE15A800F1CF71 /* API.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

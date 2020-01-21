@@ -8,12 +8,11 @@
 
 import UIKit
 import Kingfisher
-import collection_view_layouts
 
 let gap: CGFloat = 10;
 let pageSize: NSInteger = 10;
 
-class ListVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, LayoutDelegate {
+class ListVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     @IBOutlet weak var collection: UICollectionView?
     @IBOutlet weak var pageControl: UIPageControl?
@@ -23,7 +22,7 @@ class ListVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         didSet {
             DispatchQueue.main.async {
                 if let pageControl = self.pageControl {
-                    if (self.users.count > pageSize * pageControl.numberOfPages) {
+                    if (self.users.count >= pageSize * pageControl.numberOfPages) {
                         let pageNumb = self.users.count/pageSize;
                         pageControl.numberOfPages = pageNumb;
                         pageControl.isHidden = (pageControl.numberOfPages > 0) ? false : true
@@ -51,12 +50,12 @@ class ListVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     }
 
     @IBAction func pageControlValueChanged(_ sender: Any) {
-        redrawCollection()
+        collection?.scrollToItem(at: IndexPath(row: 0, section: pageControl!.currentPage*pageSize), at: .top, animated: true)
     }
 
     func redrawCollection() {
-        self.prepareCellSizes()
-        self.showLayout()
+        //self.prepareCellSizes()
+        collection?.reloadData()
     }
     @objc func refreshData() {
         if (pageControl!.numberOfPages == pageControl!.currentPage + 1) {
@@ -95,21 +94,22 @@ class ListVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return  (pageSize < users.count ? pageSize : users.count)
+        return users.count
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1;
-        let index = self.pageControl!.currentPage*pageSize+section;
+
+        let index = section;
         let user = users[index]
         let items = user.items ?? []
         return items.count;
+
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
 
         if let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "SectionHeader", for: indexPath) as? SectionHeader{
-            let index = self.pageControl!.currentPage*pageSize+indexPath.section;
+            let index = indexPath.section;//self.pageControl!.currentPage*pageSize+indexPath.section;
             let user = users[index]
             sectionHeader.label.text = "\(user.name ?? "Unknown")"
             let imgUrl = URL(string: user.image ?? "")
@@ -124,11 +124,11 @@ class ListVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
 
         let cell : CollectionViewCell  = collectionView
             .dequeueReusableCell(withReuseIdentifier: collectionCellID, for: indexPath) as! CollectionViewCell
-        let index = self.pageControl!.currentPage*pageSize+indexPath.section;
+        let index = indexPath.section
         let user = users[index]
         let items = user.items ?? []
         let imgUrl = URL(string: items[indexPath.row] )
-        // cell.imageView.kf.setImage(with: imgUrl)
+         cell.imageView.kf.setImage(with: imgUrl)
         return cell
     }
 
@@ -140,7 +140,6 @@ class ListVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     }
 
     private var cellSizes = [[CGSize]]()
-    private var layout: BaseLayout!
 
     private func prepareCellSizes() {
         cellSizes.removeAll()
@@ -153,7 +152,6 @@ class ListVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
 
                     //even
                     var width = CGFloat(((collection?.frame.size.width ?? 100)-gap)/2)
-
 
                     if (items.count % 2 != 0)  {//odd
                         if (item == items.first) {
@@ -170,20 +168,6 @@ class ListVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         }
     }
 
-    private func showLayout() {
-
-        layout = Px500Layout()
-        layout.delegate = self
-
-        // All layouts support this configs
-        layout.contentPadding = ItemsPadding(horizontal: 0, vertical: 0)
-        layout.cellsPadding = ItemsPadding(horizontal: gap, vertical: gap)
-
-        collection?.collectionViewLayout = layout
-        collection?.setContentOffset(CGPoint.zero, animated: false)
-        collection?.reloadData()
-    }
-
     func cellSize(indexPath: IndexPath) -> CGSize {
         let s = indexPath.section;
         let r = indexPath.row;
@@ -194,6 +178,25 @@ class ListVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     func headerHeight(indexPath: IndexPath) -> CGFloat {
         return 75
     }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+          return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+      }
+
+      func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+          //return cellSize(indexPath: indexPath)
+        return CGSize(width: 100, height: 100)
+      }
+
+      func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+          return 10
+      }
+      func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+          return 10
+      }
+
+
+    
 
 
     /*
